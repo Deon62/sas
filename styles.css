@@ -50,28 +50,20 @@ body {
 }
 
 /* Landing View */
-.hero {
+.landing-container {
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    background: linear-gradient(135deg, var(--accent) 0%, #1A252F 100%);
     padding: 2rem;
-    padding-top: 5rem;
-    text-align: center;
-    background: linear-gradient(135deg, var(--bg) 0%, #F0F0EB 100%);
 }
 
-.hero-main-content {
-    max-width: 500px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
+.landing-content {
     text-align: center;
+    color: white;
+    max-width: 600px;
+    width: 100%;
     animation: fadeInUp 0.8s ease-out;
 }
 
@@ -86,32 +78,104 @@ body {
     }
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--accent);
+.app-title {
+    font-size: 4rem;
     font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     letter-spacing: -0.02em;
 }
 
-.hero p {
+.app-tagline {
+    font-size: 1.5rem;
+    margin: 0 0 3rem 0;
+    opacity: 0.9;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.landing-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.landing-buttons .btn {
+    min-width: 150px;
+    padding: 1rem 2rem;
     font-size: 1.1rem;
-    color: var(--muted);
-    margin-bottom: 3rem;
-    max-width: 400px;
-    line-height: 1.6;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
 }
 
-.hero .subtitle {
-    font-size: 0.95rem;
-    color: var(--muted);
-    margin-bottom: 2rem;
-    opacity: 0.8;
+.landing-buttons .btn-primary {
+    background-color: white;
+    color: var(--accent);
+    border: 2px solid white;
 }
 
-.hero-content {
-    max-width: 500px;
-    margin: 0 auto;
+.landing-buttons .btn-primary:hover {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.landing-buttons .btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.landing-buttons .btn-secondary:hover {
+    background-color: white;
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Mobile Responsive for Landing */
+@media (max-width: 768px) {
+    .landing-container {
+        padding: 1rem;
+    }
+    
+    .app-title {
+        font-size: 3rem;
+    }
+    
+    .app-tagline {
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .landing-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .landing-buttons .btn {
+        width: 100%;
+        max-width: 250px;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-title {
+        font-size: 2.5rem;
+    }
+    
+    .app-tagline {
+        font-size: 1.1rem;
+    }
 }
 
 /* Features Section */
