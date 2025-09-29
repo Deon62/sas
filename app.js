@@ -783,7 +783,7 @@ function loadAI() {
 }
 
 // Send AI message
-function sendAIMessage() {
+async function sendAIMessage() {
     const textInput = document.getElementById('ai-text-input');
     const conversation = document.getElementById('ai-conversation');
     
@@ -798,12 +798,39 @@ function sendAIMessage() {
     // Show thinking state
     showAIThinking();
     
-    // Simulate AI response after delay
-    setTimeout(() => {
+    try {
+        // Get conversation history for context
+        const conversationHistory = getConversationHistory();
+        
+        // Call the backend API
+        const response = await fetch('http://localhost:3001/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: userMessage,
+                conversationHistory: conversationHistory
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Hide thinking state and show AI response
         hideAIThinking();
-        const aiResponse = generateAIResponse(userMessage);
-        addMessageToConversation('ai', aiResponse);
-    }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
+        addMessageToConversation('ai', data.response);
+        
+    } catch (error) {
+        console.error('AI Chat Error:', error);
+        
+        // Hide thinking state and show error message
+        hideAIThinking();
+        addMessageToConversation('ai', 'Sorry, I\'m having trouble connecting to the AI service. Please try again later.');
+    }
 }
 
 // Add message to conversation
@@ -883,7 +910,29 @@ function hideAIThinking() {
     }
 }
 
-// Generate mock AI response
+// Get conversation history for API context
+function getConversationHistory() {
+    const conversation = document.getElementById('ai-conversation');
+    if (!conversation) return [];
+    
+    const messages = conversation.querySelectorAll('.ai-message');
+    const history = [];
+    
+    messages.forEach(message => {
+        if (message.classList.contains('user-message')) {
+            const content = message.querySelector('.ai-content p').textContent;
+            history.push({ role: 'user', content: content });
+        } else if (message.classList.contains('ai-message') && !message.classList.contains('ai-thinking')) {
+            const content = message.querySelector('.ai-content p').textContent;
+            history.push({ role: 'assistant', content: content });
+        }
+    });
+    
+    // Keep only the last 10 messages to avoid context overflow
+    return history.slice(-10);
+}
+
+// Generate mock AI response (fallback)
 function generateAIResponse(userMessage) {
     const responses = [
         "That's a great question about Stellar! The Stellar network is designed for fast, low-cost cross-border payments.",
