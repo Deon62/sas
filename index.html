@@ -120,9 +120,45 @@
             <div class="nav-links" id="nav-links">
                 <button class="nav-link active" data-view="feed">Feed</button>
                 <button class="nav-link" data-view="leaderboard">Board</button>
-                <button class="nav-link" data-view="profile">Profile</button>
             </div>
         </nav>
+
+        <!-- Mobile Sidebar -->
+        <div class="mobile-sidebar" id="mobile-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <h3>SAS</h3>
+                    <button class="close-sidebar" id="close-sidebar">×</button>
+                </div>
+                <div class="sidebar-links">
+                    <button class="sidebar-link" data-view="dashboard">
+                        Dashboard
+                    </button>
+                    <button class="sidebar-link active" data-view="feed">
+                        Feed
+                    </button>
+                    <button class="sidebar-link" data-view="leaderboard">
+                        Leaderboard
+                    </button>
+                    <button class="sidebar-link" data-view="notifications">
+                        Notifications
+                    </button>
+                </div>
+                <div class="sidebar-footer">
+                    <button class="sidebar-link profile-link" data-view="profile">
+                        <span class="link-icon">👤</span>
+                        Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="view-content">
+            <div class="dashboard-container" id="dashboard-container">
+                <!-- Dashboard will be dynamically loaded here -->
+            </div>
+        </div>
 
         <!-- Feed View -->
         <div id="feed-view" class="view-content active">
@@ -135,6 +171,13 @@
         <div id="leaderboard-view" class="view-content">
             <div class="leaderboard-container" id="leaderboard-container">
                 <!-- Leaderboard will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Notifications View -->
+        <div id="notifications-view" class="view-content">
+            <div class="notifications-container" id="notifications-container">
+                <!-- Notifications will be dynamically loaded here -->
             </div>
         </div>
 

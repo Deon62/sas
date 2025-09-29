@@ -24,6 +24,7 @@ const createPostModal = document.getElementById('create-post-modal');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
+    // console.log('DOM Content Loaded');
     loadData();
     initializeEventListeners();
     checkUserAuth();
@@ -33,6 +34,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         handleFeatureAnimations();
     }, 500);
+    
+    // Test if elements exist after DOM load
+    setTimeout(() => {
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        // console.log('After DOM load - Hamburger menu:', hamburgerMenu);
+        // console.log('After DOM load - Mobile sidebar:', mobileSidebar);
+    }, 1000);
 });
 
 // Load data from localStorage
@@ -75,73 +84,162 @@ function showLanding() {
 
 // Show app view
 function showApp() {
+    // console.log('Showing app view');
     landingView.classList.remove('active');
     appView.classList.add('active');
-    loadFeed();
-    loadLeaderboard();
-    loadProfile();
+    // console.log('App view active:', appView.classList.contains('active'));
+    // Load the default view (feed)
+    switchView('feed');
 }
 
 // Initialize event listeners
 function initializeEventListeners() {
-    // Landing
-    document.getElementById('get-started-btn').addEventListener('click', showSetupModal);
+    // Landing (only if element exists)
+    const getStartedBtn = document.getElementById('get-started-btn');
+    if (getStartedBtn) {
+        getStartedBtn.addEventListener('click', showSetupModal);
+    }
     
-    // Landing navbar
-    document.getElementById('landing-hamburger-menu').addEventListener('click', toggleLandingMobileMenu);
-    document.getElementById('login-btn').addEventListener('click', showLoginModal);
-    document.getElementById('signup-btn').addEventListener('click', showSignupModal);
+    // Landing navbar (only if element exists)
+    const landingHamburgerMenu = document.getElementById('landing-hamburger-menu');
+    if (landingHamburgerMenu) {
+        landingHamburgerMenu.addEventListener('click', toggleLandingMobileMenu);
+    }
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', showLoginModal);
+    }
     
-    // Login modal
-    document.getElementById('login-form').addEventListener('submit', handleLogin);
-    document.getElementById('login-pin-toggle').addEventListener('click', () => togglePinVisibility('login-pin', 'login-pin-toggle'));
-    document.getElementById('cancel-login-btn').addEventListener('click', () => {
-        clearLoginForm();
-        hideModal(loginModal);
-    });
+    const signupBtn = document.getElementById('signup-btn');
+    if (signupBtn) {
+        signupBtn.addEventListener('click', showSignupModal);
+    }
     
-    // Signup modal
-    document.getElementById('signup-form').addEventListener('submit', handleSignup);
-    document.getElementById('signup-pin-toggle').addEventListener('click', () => togglePinVisibility('signup-pin', 'signup-pin-toggle'));
-    document.getElementById('cancel-signup-btn').addEventListener('click', () => {
-        clearSignupForm();
-        hideModal(signupModal);
-    });
+    // Login modal (only if elements exist)
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
     
-    // Wallet modal
-    document.getElementById('connect-wallet-btn').addEventListener('click', showWalletModal);
+    const loginPinToggle = document.getElementById('login-pin-toggle');
+    if (loginPinToggle) {
+        loginPinToggle.addEventListener('click', () => togglePinVisibility('login-pin', 'login-pin-toggle'));
+    }
     
-    // Wallet modal
-    document.getElementById('generate-key-btn').addEventListener('click', generateTestKey);
-    document.getElementById('connect-wallet-confirm').addEventListener('click', connectWallet);
+    const cancelLoginBtn = document.getElementById('cancel-login-btn');
+    if (cancelLoginBtn) {
+        cancelLoginBtn.addEventListener('click', () => {
+            clearLoginForm();
+            hideModal(loginModal);
+        });
+    }
     
-    // Create post modal
-    document.getElementById('create-post-form').addEventListener('submit', handleCreatePost);
-    document.getElementById('cancel-post-btn').addEventListener('click', hideCreatePostModal);
+    // Signup modal (only if elements exist)
+    const signupForm = document.getElementById('signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('submit', handleSignup);
+    }
+    
+    const signupPinToggle = document.getElementById('signup-pin-toggle');
+    if (signupPinToggle) {
+        signupPinToggle.addEventListener('click', () => togglePinVisibility('signup-pin', 'signup-pin-toggle'));
+    }
+    
+    const cancelSignupBtn = document.getElementById('cancel-signup-btn');
+    if (cancelSignupBtn) {
+        cancelSignupBtn.addEventListener('click', () => {
+            clearSignupForm();
+            hideModal(signupModal);
+        });
+    }
+    
+    // Wallet modal (only if elements exist)
+    const connectWalletBtn = document.getElementById('connect-wallet-btn');
+    if (connectWalletBtn) {
+        connectWalletBtn.addEventListener('click', showWalletModal);
+    }
+    
+    const generateKeyBtn = document.getElementById('generate-key-btn');
+    if (generateKeyBtn) {
+        generateKeyBtn.addEventListener('click', generateTestKey);
+    }
+    
+    const connectWalletConfirm = document.getElementById('connect-wallet-confirm');
+    if (connectWalletConfirm) {
+        connectWalletConfirm.addEventListener('click', connectWallet);
+    }
+    
+    // Create post modal (only if elements exist)
+    const createPostForm = document.getElementById('create-post-form');
+    if (createPostForm) {
+        createPostForm.addEventListener('submit', handleCreatePost);
+    }
+    
+    const cancelPostBtn = document.getElementById('cancel-post-btn');
+    if (cancelPostBtn) {
+        cancelPostBtn.addEventListener('click', hideCreatePostModal);
+    }
     
     // Navigation
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const view = e.target.dataset.view;
             switchView(view);
-            // Close mobile menu after navigation
-            closeMobileMenu();
         });
     });
     
+    // Mobile sidebar navigation (only if elements exist)
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    if (sidebarLinks.length > 0) {
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const view = e.target.dataset.view;
+                switchView(view);
+                closeMobileSidebar();
+            });
+        });
+    }
+    
     // Hamburger menu
-    document.getElementById('hamburger-menu').addEventListener('click', toggleMobileMenu);
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleMobileSidebar();
+        });
+    }
     
-    // Floating create post button
-    document.getElementById('create-post-btn').addEventListener('click', showCreatePostModal);
+    // Close sidebar
+    const closeSidebar = document.getElementById('close-sidebar');
+    if (closeSidebar) {
+        closeSidebar.addEventListener('click', closeMobileSidebar);
+    }
     
-    // Modal close on backdrop click
-    [loginModal, signupModal, walletModal, createPostModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                hideModal(modal);
+    // Close sidebar on backdrop click
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    if (mobileSidebar) {
+        mobileSidebar.addEventListener('click', (e) => {
+            if (e.target === mobileSidebar) {
+                closeMobileSidebar();
             }
         });
+    }
+    
+    // Floating create post button (only if element exists)
+    const createPostBtn = document.getElementById('create-post-btn');
+    if (createPostBtn) {
+        createPostBtn.addEventListener('click', showCreatePostModal);
+    }
+    
+    // Modal close on backdrop click (only if modals exist)
+    [loginModal, signupModal, walletModal, createPostModal].forEach(modal => {
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    hideModal(modal);
+                }
+            });
+        }
     });
     
     // Landing navbar scroll effect
@@ -191,22 +289,34 @@ function hideModal(modal) {
     modal.classList.remove('active');
 }
 
-// Toggle mobile menu
-function toggleMobileMenu() {
+// Toggle mobile sidebar
+function toggleMobileSidebar() {
     const hamburgerMenu = document.getElementById('hamburger-menu');
-    const navLinks = document.getElementById('nav-links');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
     
-    hamburgerMenu.classList.toggle('active');
-    navLinks.classList.toggle('active');
+    // console.log('toggleMobileSidebar called');
+    // console.log('hamburgerMenu:', hamburgerMenu);
+    // console.log('mobileSidebar:', mobileSidebar);
+    
+    if (hamburgerMenu && mobileSidebar) {
+        hamburgerMenu.classList.toggle('active');
+        mobileSidebar.classList.toggle('active');
+        // console.log('Classes toggled. Hamburger active:', hamburgerMenu.classList.contains('active'));
+        // console.log('Sidebar active:', mobileSidebar.classList.contains('active'));
+    } else {
+        // console.log('Elements not found for toggle');
+    }
 }
 
-// Close mobile menu
-function closeMobileMenu() {
+// Close mobile sidebar
+function closeMobileSidebar() {
     const hamburgerMenu = document.getElementById('hamburger-menu');
-    const navLinks = document.getElementById('nav-links');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
     
-    hamburgerMenu.classList.remove('active');
-    navLinks.classList.remove('active');
+    if (hamburgerMenu && mobileSidebar) {
+        hamburgerMenu.classList.remove('active');
+        mobileSidebar.classList.remove('active');
+    }
 }
 
 // Toggle landing mobile menu
@@ -414,13 +524,69 @@ function switchView(viewName) {
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
-    document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
+    const navLink = document.querySelector(`.nav-link[data-view="${viewName}"]`);
+    if (navLink) {
+        navLink.classList.add('active');
+    }
+    
+    // Update sidebar links
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    const sidebarLink = document.querySelector(`.sidebar-link[data-view="${viewName}"]`);
+    if (sidebarLink) {
+        sidebarLink.classList.add('active');
+    }
     
     // Update view content
     document.querySelectorAll('.view-content').forEach(view => {
         view.classList.remove('active');
     });
     document.getElementById(`${viewName}-view`).classList.add('active');
+    
+    // Load content for the view
+    switch(viewName) {
+        case 'dashboard':
+            loadDashboard();
+            break;
+        case 'feed':
+            loadFeed();
+            break;
+        case 'leaderboard':
+            loadLeaderboard();
+            break;
+        case 'notifications':
+            loadNotifications();
+            break;
+        case 'profile':
+            loadProfile();
+            break;
+    }
+}
+
+// Load dashboard
+function loadDashboard() {
+    const container = document.getElementById('dashboard-container');
+    container.innerHTML = `
+        <div class="dashboard-welcome">
+            <h2>Welcome back, ${currentUser ? currentUser.displayName : 'User'}!</h2>
+            <p>Here's your activity overview</p>
+        </div>
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3>Your Posts</h3>
+                <p class="stat-number">${posts.filter(p => p.authorId === currentUser?.id).length}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Votes Received</h3>
+                <p class="stat-number">${votes.filter(v => posts.find(p => p.id === v.postId && p.authorId === currentUser?.id)).length}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Your Score</h3>
+                <p class="stat-number">${ambassadors.find(a => a.id === currentUser?.id)?.score || 0}</p>
+            </div>
+        </div>
+    `;
 }
 
 // Load feed
@@ -435,6 +601,26 @@ function loadFeed() {
         const postElement = createPostElement(post);
         container.appendChild(postElement);
     });
+}
+
+// Load notifications
+function loadNotifications() {
+    const container = document.getElementById('notifications-container');
+    container.innerHTML = `
+        <div class="notifications-header">
+            <h2>Notifications</h2>
+        </div>
+        <div class="notifications-list">
+            <div class="notification-item">
+                <div class="notification-icon">🔔</div>
+                <div class="notification-content">
+                    <h4>Welcome to SAS!</h4>
+                    <p>You've successfully joined the Stellar Ambassador community.</p>
+                    <span class="notification-time">Just now</span>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // Create post element
