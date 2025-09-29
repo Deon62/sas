@@ -237,11 +237,21 @@ function initializeEventListeners() {
         });
     }
     
-    // Create post button in bottom navigation (only if element exists)
-    const createPostBtn = document.getElementById('create-post-btn');
-    if (createPostBtn) {
-        createPostBtn.addEventListener('click', showCreatePostModal);
-    }
+    // Create post buttons in bottom navigation (only if elements exist)
+    const createPostBtns = [
+        'create-post-btn',
+        'create-post-btn-leaderboard', 
+        'create-post-btn-chat',
+        'create-post-btn-ai',
+        'create-post-btn-notifications'
+    ];
+    
+    createPostBtns.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.addEventListener('click', showCreatePostModal);
+        }
+    });
     
     // Modal close on backdrop click (only if modals exist)
     [loginModal, signupModal, walletModal, createPostModal].forEach(modal => {
