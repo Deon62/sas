@@ -200,6 +200,18 @@ function initializeEventListeners() {
         });
     }
     
+    // Bottom navigation (only if elements exist)
+    const bottomNavBtns = document.querySelectorAll('.bottom-nav-btn');
+    if (bottomNavBtns.length > 0) {
+        bottomNavBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const view = e.currentTarget.dataset.view;
+                switchView(view);
+                updateBottomNavActive(view);
+            });
+        });
+    }
+    
     // Hamburger menu
     const hamburgerMenu = document.getElementById('hamburger-menu');
     if (hamburgerMenu) {
@@ -317,6 +329,17 @@ function closeMobileSidebar() {
         hamburgerMenu.classList.remove('active');
         mobileSidebar.classList.remove('active');
     }
+}
+
+// Update bottom navigation active state
+function updateBottomNavActive(activeView) {
+    const bottomNavBtns = document.querySelectorAll('.bottom-nav-btn');
+    bottomNavBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.view === activeView) {
+            btn.classList.add('active');
+        }
+    });
 }
 
 // Toggle landing mobile menu
@@ -538,6 +561,9 @@ function switchView(viewName) {
         sidebarLink.classList.add('active');
     }
     
+    // Update bottom navigation
+    updateBottomNavActive(viewName);
+    
     // Update view content
     document.querySelectorAll('.view-content').forEach(view => {
         view.classList.remove('active');
@@ -554,6 +580,12 @@ function switchView(viewName) {
             break;
         case 'leaderboard':
             loadLeaderboard();
+            break;
+        case 'chat':
+            loadChat();
+            break;
+        case 'ai':
+            loadAI();
             break;
         case 'notifications':
             loadNotifications();
@@ -638,6 +670,63 @@ function loadFeed() {
         const postElement = createPostElement(post);
         container.appendChild(postElement);
     });
+}
+
+// Load chat
+function loadChat() {
+    const container = document.getElementById('chat-container');
+    container.innerHTML = `
+        <div class="chat-header">
+            <h2>Messages</h2>
+        </div>
+        <div class="chat-list">
+            <div class="chat-item">
+                <div class="chat-avatar">👤</div>
+                <div class="chat-info">
+                    <h4>John Ambassador</h4>
+                    <p>Hey! How's your Stellar project going?</p>
+                    <span class="chat-time">2 min ago</span>
+                </div>
+            </div>
+            <div class="chat-item">
+                <div class="chat-avatar">👩</div>
+                <div class="chat-info">
+                    <h4>Sarah Developer</h4>
+                    <p>Thanks for the great post about DeFi!</p>
+                    <span class="chat-time">1 hour ago</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Load AI
+function loadAI() {
+    const container = document.getElementById('ai-container');
+    container.innerHTML = `
+        <div class="ai-header">
+            <h2>AI Assistant</h2>
+            <p>Ask me anything about Stellar or being an ambassador!</p>
+        </div>
+        <div class="ai-chat">
+            <div class="ai-message">
+                <div class="ai-avatar">🤖</div>
+                <div class="ai-content">
+                    <p>Hello! I'm your Stellar Ambassador AI assistant. I can help you with:</p>
+                    <ul>
+                        <li>Stellar network questions</li>
+                        <li>Ambassador program guidance</li>
+                        <li>Technical support</li>
+                        <li>Community best practices</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ai-input">
+            <input type="text" placeholder="Ask me anything..." class="ai-text-input">
+            <button class="ai-send-btn">Send</button>
+        </div>
+    `;
 }
 
 // Load notifications
