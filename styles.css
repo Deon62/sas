@@ -1923,8 +1923,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
     border-bottom: 1px solid rgba(44, 62, 80, 0.1);
 }
 
@@ -1965,7 +1965,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .recipient-info h3 {
