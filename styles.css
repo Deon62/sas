@@ -346,10 +346,10 @@ body {
 
 /* Navigation */
 .navbar {
-    background-color: rgba(245, 245, 240, 0.15);
-    backdrop-filter: blur(20px);
+    background-color: rgba(245, 245, 240, 0.05);
+    backdrop-filter: blur(25px);
     padding: 0.75rem 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -478,22 +478,23 @@ body {
     flex-direction: column;
     height: 100vh;
     padding: 1rem;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(44, 62, 80, 0.1);
+    flex-shrink: 0;
 }
 
 .sidebar-header h3 {
     color: var(--accent);
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .close-sidebar {
@@ -518,18 +519,20 @@ body {
     flex-direction: column;
     gap: 0.25rem;
     margin-bottom: 0.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
 }
 
 .sidebar-link {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.5rem;
+    padding: 0.4rem;
     background: none;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
@@ -559,6 +562,8 @@ body {
 .sidebar-footer {
     border-top: 1px solid rgba(44, 62, 80, 0.1);
     padding-top: 0.5rem;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 .profile-link {
