@@ -1126,7 +1126,7 @@ function loadProfile() {
     }
     
     container.innerHTML = `
-        <div class="profile-section">
+        <div class="profile-page-section">
             <h3>Profile Information</h3>
             <div class="profile-field">
                 <label class="profile-label">Display Name</label>
@@ -1141,7 +1141,7 @@ function loadProfile() {
                 <div class="profile-value">${currentUser.wallet || 'Not connected'}</div>
             </div>
         </div>
-        <div class="profile-section">
+        <div class="profile-page-section">
             <h3>Actions</h3>
             <div class="profile-actions">
                 <button class="btn btn-secondary" onclick="editProfile()">Edit Profile</button>
