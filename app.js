@@ -567,11 +567,33 @@ function switchView(viewName) {
 // Load dashboard
 function loadDashboard() {
     const container = document.getElementById('dashboard-container');
+    
+    // Calculate user's rank
+    const userScore = ambassadors.find(a => a.id === currentUser?.id)?.score || 0;
+    const sortedAmbassadors = [...ambassadors].sort((a, b) => b.score - a.score);
+    const userRank = sortedAmbassadors.findIndex(a => a.id === currentUser?.id) + 1;
+    const totalAmbassadors = ambassadors.length;
+    
+    // Get latest 3 earnings (mock data for now)
+    const latestEarnings = [
+        { type: 'Post Creation', amount: '10', date: '2 hours ago' },
+        { type: 'Vote Received', amount: '5', date: '1 day ago' },
+        { type: 'Community Bonus', amount: '15', date: '3 days ago' }
+    ];
+    
     container.innerHTML = `
         <div class="dashboard-welcome">
             <h2>Welcome back, ${currentUser ? currentUser.displayName : 'User'}!</h2>
             <p>Here's your activity overview</p>
         </div>
+        
+        <div class="dashboard-rank">
+            <div class="rank-card">
+                <h3>Your Rank</h3>
+                <p class="rank-number">${userRank}/${totalAmbassadors}</p>
+            </div>
+        </div>
+        
         <div class="dashboard-stats">
             <div class="stat-card">
                 <h3>Your Posts</h3>
@@ -583,7 +605,26 @@ function loadDashboard() {
             </div>
             <div class="stat-card">
                 <h3>Your Score</h3>
-                <p class="stat-number">${ambassadors.find(a => a.id === currentUser?.id)?.score || 0}</p>
+                <p class="stat-number">${userScore}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Earnings</h3>
+                <p class="stat-number">${userScore}</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-earnings">
+            <h3>Latest Earnings</h3>
+            <div class="earnings-list">
+                ${latestEarnings.map(earning => `
+                    <div class="earning-item">
+                        <div class="earning-info">
+                            <h4>${earning.type}</h4>
+                            <p class="earning-date">${earning.date}</p>
+                        </div>
+                        <div class="earning-amount">+${earning.amount}</div>
+                    </div>
+                `).join('')}
             </div>
         </div>
     `;
