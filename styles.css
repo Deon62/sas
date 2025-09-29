@@ -63,6 +63,18 @@ body {
     min-height: 100vh;
     padding: 2rem;
     text-align: center;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero h1 {
@@ -116,30 +128,86 @@ body {
 .feature-item {
     background-color: var(--card);
     padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateY(0);
+    border: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.feature-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .feature-item:hover {
-    transform: translateY(-2px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(44, 62, 80, 0.15);
+    border-color: var(--secondary);
 }
 
 .feature-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--secondary) 0%, #A8C08F 100%);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    background: linear-gradient(135deg, var(--accent) 0%, #1A252F 100%);
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-icon .icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .icon {
+    transform: scale(1.1);
 }
 
 .feature-item h4 {
     color: var(--accent);
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.feature-item:hover h4 {
+    color: var(--accent);
 }
 
 .feature-item p {
     color: var(--muted);
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+.feature-item:hover p {
+    color: var(--text);
 }
 
 /* Buttons */
@@ -163,7 +231,8 @@ body {
 
 .btn-primary:hover {
     background-color: #1A252F;
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
 }
 
 .btn-secondary {
@@ -174,6 +243,8 @@ body {
 
 .btn-secondary:hover {
     background-color: #A8C08F;
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 2px 10px rgba(181, 205, 163, 0.3);
 }
 
 /* Navigation */
@@ -524,6 +595,11 @@ body {
     overflow-y: auto;
 }
 
+.small-modal {
+    max-width: 400px;
+    padding: 1.5rem;
+}
+
 .modal-content h2 {
     margin-bottom: 1.5rem;
     color: var(--accent);
@@ -554,6 +630,33 @@ body {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
+}
+
+/* PIN Input Container */
+.pin-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pin-input-container input {
+    padding-right: 3rem;
+}
+
+.pin-toggle {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    color: var(--muted);
+    transition: color 0.2s ease;
+}
+
+.pin-toggle:hover {
+    color: var(--accent);
 }
 
 .form-actions {

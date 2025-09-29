@@ -17,7 +17,8 @@ let ambassadors = [];
 // DOM Elements
 const landingView = document.getElementById('landing-view');
 const appView = document.getElementById('app-view');
-const setupModal = document.getElementById('setup-modal');
+const loginModal = document.getElementById('login-modal');
+const signupModal = document.getElementById('signup-modal');
 const walletModal = document.getElementById('wallet-modal');
 const createPostModal = document.getElementById('create-post-modal');
 
@@ -27,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
     checkUserAuth();
     seedTestData();
+    
+    // Initialize feature animations
+    setTimeout(() => {
+        handleFeatureAnimations();
+    }, 500);
 });
 
 // Load data from localStorage
@@ -83,11 +89,18 @@ function initializeEventListeners() {
     
     // Landing navbar
     document.getElementById('landing-hamburger-menu').addEventListener('click', toggleLandingMobileMenu);
-    document.getElementById('login-btn').addEventListener('click', showSetupModal);
-    document.getElementById('signup-btn').addEventListener('click', showSetupModal);
+    document.getElementById('login-btn').addEventListener('click', showLoginModal);
+    document.getElementById('signup-btn').addEventListener('click', showSignupModal);
     
-    // Setup modal
-    document.getElementById('setup-form').addEventListener('submit', handleSetup);
+    // Login modal
+    document.getElementById('login-form').addEventListener('submit', handleLogin);
+    document.getElementById('login-pin-toggle').addEventListener('click', () => togglePinVisibility('login-pin', 'login-pin-toggle'));
+    
+    // Signup modal
+    document.getElementById('signup-form').addEventListener('submit', handleSignup);
+    document.getElementById('signup-pin-toggle').addEventListener('click', () => togglePinVisibility('signup-pin', 'signup-pin-toggle'));
+    
+    // Wallet modal
     document.getElementById('connect-wallet-btn').addEventListener('click', showWalletModal);
     
     // Wallet modal
@@ -115,7 +128,7 @@ function initializeEventListeners() {
     document.getElementById('create-post-btn').addEventListener('click', showCreatePostModal);
     
     // Modal close on backdrop click
-    [setupModal, walletModal, createPostModal].forEach(modal => {
+    [loginModal, signupModal, walletModal, createPostModal].forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 hideModal(modal);
@@ -125,12 +138,26 @@ function initializeEventListeners() {
     
     // Landing navbar scroll effect
     window.addEventListener('scroll', handleLandingNavbarScroll);
+    
+    // Feature animations on scroll
+    window.addEventListener('scroll', handleFeatureAnimations);
 }
 
-// Show setup modal
+// Show login modal
+function showLoginModal() {
+    loginModal.classList.add('active');
+    closeLandingMobileMenu();
+}
+
+// Show signup modal
+function showSignupModal() {
+    signupModal.classList.add('active');
+    closeLandingMobileMenu();
+}
+
+// Show setup modal (for get started button)
 function showSetupModal() {
-    setupModal.classList.add('active');
-    // Close landing mobile menu if open
+    signupModal.classList.add('active');
     closeLandingMobileMenu();
 }
 
@@ -183,6 +210,84 @@ function handleLandingNavbarScroll() {
     } else if (landingNavbar) {
         landingNavbar.classList.remove('scrolled');
     }
+}
+
+// Handle feature animations on scroll
+function handleFeatureAnimations() {
+    const featureItems = document.querySelectorAll('.feature-item');
+    const windowHeight = window.innerHeight;
+    
+    featureItems.forEach((item, index) => {
+        const elementTop = item.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+            setTimeout(() => {
+                item.classList.add('animate');
+            }, index * 100); // Staggered animation
+        }
+    });
+}
+
+// Toggle PIN visibility
+function togglePinVisibility(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const toggle = document.getElementById(toggleId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        toggle.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        toggle.textContent = '👁️';
+    }
+}
+
+// Handle login
+function handleLogin(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('login-email').value;
+    const pin = document.getElementById('login-pin').value;
+    
+    // Check if user exists in localStorage
+    const userData = localStorage.getItem('ambassadorApp.user');
+    if (userData) {
+        const user = JSON.parse(userData);
+        if (user.email === email && user.pin === pin) {
+            currentUser = user;
+            saveData();
+            hideModal(loginModal);
+            showApp();
+        } else {
+            alert('Invalid email or PIN');
+        }
+    } else {
+        alert('No account found. Please sign up first.');
+    }
+}
+
+// Handle signup
+function handleSignup(e) {
+    e.preventDefault();
+    
+    const displayName = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const pin = document.getElementById('signup-pin').value;
+    
+    // Create user object
+    currentUser = {
+        id: generateId(),
+        displayName,
+        email,
+        pin,
+        wallet: null,
+        createdAt: new Date().toISOString()
+    };
+    
+    saveData();
+    hideModal(signupModal);
+    showApp();
 }
 
 // Handle setup form submission
