@@ -567,6 +567,8 @@ function connectWallet() {
 
 // Switch between views
 function switchView(viewName) {
+    console.log('Switching to view:', viewName);
+    
     // Nav links removed - only hamburger menu navigation now
     
     // Sidebar links no longer have active states - removed highlighting
@@ -578,7 +580,14 @@ function switchView(viewName) {
     document.querySelectorAll('.view-content').forEach(view => {
         view.classList.remove('active');
     });
-    document.getElementById(`${viewName}-view`).classList.add('active');
+    
+    const targetView = document.getElementById(`${viewName}-view`);
+    if (!targetView) {
+        console.error(`View element not found: ${viewName}-view`);
+        return;
+    }
+    
+    targetView.classList.add('active');
     
     // Load content for the view
     switch(viewName) {
@@ -589,6 +598,7 @@ function switchView(viewName) {
             loadFeed();
             break;
         case 'leaderboard':
+            console.log('Loading leaderboard...');
             loadLeaderboard();
             break;
         case 'chat':
@@ -603,6 +613,8 @@ function switchView(viewName) {
         case 'profile':
             loadProfile();
             break;
+        default:
+            console.warn('Unknown view:', viewName);
     }
 }
 
@@ -1096,24 +1108,86 @@ function savePost(post) {
 // Load leaderboard
 function loadLeaderboard() {
     const container = document.getElementById('leaderboard-container');
+    
+    // Check if container exists
+    if (!container) {
+        console.error('Leaderboard container not found!');
+        return;
+    }
+    
     container.innerHTML = '';
     
     // Sort ambassadors by score
     const sortedAmbassadors = [...ambassadors].sort((a, b) => b.score - a.score);
     
-    sortedAmbassadors.forEach((ambassador, index) => {
+    // Add header
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'leaderboard-header';
+    headerDiv.innerHTML = `
+        <h2>Leaderboard</h2>
+        <p>Top Stellar Ambassadors</p>
+    `;
+    container.appendChild(headerDiv);
+    
+    // Limit to top 9 positions
+    const topAmbassadors = sortedAmbassadors.slice(0, 9);
+    
+    topAmbassadors.forEach((ambassador, index) => {
+        const rank = index + 1;
         const div = document.createElement('div');
-        div.className = 'leaderboard-item';
+        
+        // Add special classes for top 3 positions
+        let itemClass = 'leaderboard-item';
+        let rankClass = 'leaderboard-rank';
+        
+        if (rank === 1) {
+            itemClass += ' leaderboard-first';
+            rankClass += ' rank-first';
+        } else if (rank === 2) {
+            itemClass += ' leaderboard-second';
+            rankClass += ' rank-second';
+        } else if (rank === 3) {
+            itemClass += ' leaderboard-third';
+            rankClass += ' rank-third';
+        }
+        
+        div.className = itemClass;
+        // Shorten wallet address for display
+        const shortWallet = ambassador.wallet ? ambassador.wallet.substring(0, 8) + '...' : 'No wallet';
+        
         div.innerHTML = `
-            <div class="leaderboard-rank">#${index + 1}</div>
+            <div class="${rankClass}">
+                ${rank <= 3 ? 
+                    `<svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55.47.98.97 1.21l1.03.34c.45.15.95.15 1.4 0l1.03-.34c.5-.23.97-.66.97-1.21v-2.34"></path>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                    </svg>` : 
+                    '#' + rank
+                }
+            </div>
             <div class="leaderboard-info">
                 <div class="leaderboard-name">${escapeHtml(ambassador.displayName)}</div>
-                <div class="leaderboard-wallet">${ambassador.wallet}</div>
+                <div class="leaderboard-wallet">${shortWallet}</div>
             </div>
-            <div class="leaderboard-score">${ambassador.score} pts</div>
+            <div class="leaderboard-score">${ambassador.score}</div>
         `;
         container.appendChild(div);
     });
+    
+    // Add empty state if no ambassadors
+    if (topAmbassadors.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'leaderboard-empty';
+        emptyDiv.innerHTML = `
+            <div class="empty-icon">🏆</div>
+            <h3>No Ambassadors Yet</h3>
+            <p>Be the first to join the leaderboard by creating posts and earning votes!</p>
+        `;
+        container.appendChild(emptyDiv);
+    }
 }
 
 // Load profile
@@ -1210,13 +1284,55 @@ function seedTestData() {
                 id: 'amb1',
                 displayName: 'Alice Stellar',
                 wallet: 'GALICE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                score: 25
+                score: 45
             },
             {
                 id: 'amb2',
                 displayName: 'Bob Lumens',
                 wallet: 'GBOB123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                score: 18
+                score: 38
+            },
+            {
+                id: 'amb3',
+                displayName: 'Charlie XLM',
+                wallet: 'GCHARLIE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 32
+            },
+            {
+                id: 'amb4',
+                displayName: 'Diana DeFi',
+                wallet: 'GDIANA123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 28
+            },
+            {
+                id: 'amb5',
+                displayName: 'Eve Ambassador',
+                wallet: 'GEVE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 24
+            },
+            {
+                id: 'amb6',
+                displayName: 'Frank Network',
+                wallet: 'GFRANK123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 20
+            },
+            {
+                id: 'amb7',
+                displayName: 'Grace Stellar',
+                wallet: 'GGRACE123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 16
+            },
+            {
+                id: 'amb8',
+                displayName: 'Henry Lumens',
+                wallet: 'GHENRY123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 12
+            },
+            {
+                id: 'amb9',
+                displayName: 'Ivy Blockchain',
+                wallet: 'GIVY123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                score: 8
             }
         ];
         
