@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Ambassador</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Landing View -->
+    <div id="landing-view" class="view active">
+        <!-- Landing Navigation -->
+        <nav class="landing-navbar">
+            <div class="nav-brand">
+                <h2>Stellar Ambassador</h2>
+            </div>
+            <button class="hamburger-menu" id="landing-hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="landing-nav-links" id="landing-nav-links">
+                <a href="#about" class="landing-nav-link">About</a>
+                <a href="#contact" class="landing-nav-link">Contact</a>
+                <div class="auth-buttons">
+                    <button class="btn btn-secondary" id="login-btn">Login</button>
+                    <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Stellar Ambassador</h1>
+                <p class="subtitle">Join the Stellar ecosystem community</p>
+                <p>Connect with fellow ambassadors, share insights, and contribute to the growth of decentralized finance on Stellar.</p>
+                <button id="get-started-btn" class="btn btn-primary">Get Started</button>
+                
+                <!-- Features Section -->
+                <div class="features-section">
+                    <h3>What you can do as a Stellar Ambassador:</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">📝</div>
+                            <h4>Post Events</h4>
+                            <p>Share upcoming Stellar events, meetups, and community gatherings</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📈</div>
+                            <h4>Share Progress</h4>
+                            <p>Document your journey and showcase your contributions to the ecosystem</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">👥</div>
+                            <h4>View Fellow Work</h4>
+                            <p>Discover and learn from other ambassadors' projects and achievements</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🏆</div>
+                            <h4>Award & Be Rewarded</h4>
+                            <p>Vote on contributions and earn recognition for your own work</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🤝</div>
+                            <h4>Connect with Peers</h4>
+                            <p>Build relationships with like-minded ambassadors worldwide</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App View -->
+    <div id="app-view" class="view">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h2>Stellar Ambassador</h2>
+            </div>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <button class="nav-link active" data-view="feed">Feed</button>
+                <button class="nav-link" data-view="leaderboard">Board</button>
+                <button class="nav-link" data-view="profile">Profile</button>
+            </div>
+        </nav>
+
+        <!-- Feed View -->
+        <div id="feed-view" class="view-content active">
+            <div class="posts-container" id="posts-container">
+                <!-- Posts will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Leaderboard View -->
+        <div id="leaderboard-view" class="view-content">
+            <div class="leaderboard-container" id="leaderboard-container">
+                <!-- Leaderboard will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profile-view" class="view-content">
+            <div class="profile-container" id="profile-container">
+                <!-- Profile will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Floating Create Post Button -->
+        <button id="create-post-btn" class="floating-btn">+</button>
+    </div>
+
+    <!-- Setup Modal -->
+    <div id="setup-modal" class="modal">
+        <div class="modal-content">
+            <h2>Setup Your Profile</h2>
+            <form id="setup-form">
+                <div class="form-group">
+                    <label for="display-name">Display Name</label>
+                    <input type="text" id="display-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="pin">4-digit PIN</label>
+                    <input type="password" id="pin" maxlength="4" pattern="[0-9]{4}" required>
+                </div>
+                <div class="form-group">
+                    <label>Wallet Connection (Optional)</label>
+                    <button type="button" id="connect-wallet-btn" class="btn btn-secondary">Connect Wallet</button>
+                    <div id="wallet-status" class="wallet-status">You can connect your wallet later in your profile</div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wallet Modal -->
+    <div id="wallet-modal" class="modal">
+        <div class="modal-content">
+            <h2>Connect Wallet</h2>
+            <div class="wallet-options">
+                <div class="form-group">
+                    <label for="public-key">Stellar Public Key</label>
+                    <input type="text" id="public-key" placeholder="G...">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="generate-key-btn" class="btn btn-secondary">Generate Test Key</button>
+                    <button type="button" id="connect-wallet-confirm" class="btn btn-primary">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="create-post-modal" class="modal">
+        <div class="modal-content">
+            <h2>Create Post</h2>
+            <form id="create-post-form">
+                <div class="form-group">
+                    <label for="post-title">Title</label>
+                    <input type="text" id="post-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-description">Description</label>
+                    <textarea id="post-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-image">Image (optional)</label>
+                    <input type="file" id="post-image" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-post-btn" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
