@@ -638,7 +638,6 @@ function loadDashboard() {
     container.innerHTML = `
         <div class="dashboard-welcome">
             <h2>Welcome back, ${currentUser ? currentUser.displayName : 'User'}!</h2>
-            <p>Here's your activity overview</p>
         </div>
         
         <div class="dashboard-rank">

@@ -1126,22 +1126,23 @@ body {
 /* Dashboard */
 .dashboard-welcome {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .dashboard-welcome h2 {
     color: var(--accent);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.3rem;
 }
 
 .dashboard-rank {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .rank-card {
     background-color: var(--card);
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 1.2rem;
+    border-radius: 10px;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border: 2px solid var(--secondary);
@@ -1149,14 +1150,14 @@ body {
 
 .rank-card h3 {
     color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .rank-number {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: var(--accent);
     margin: 0;
@@ -1164,29 +1165,29 @@ body {
 
 .dashboard-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .stat-card {
     background-color: var(--card);
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 1rem;
+    border-radius: 10px;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .stat-card h3 {
     color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .stat-number {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--accent);
     margin: 0;
@@ -1194,15 +1195,15 @@ body {
 
 .dashboard-earnings {
     background-color: var(--card);
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 1.2rem;
+    border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .dashboard-earnings h3 {
     color: var(--accent);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
 }
 
 .earnings-list {
