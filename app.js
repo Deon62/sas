@@ -287,6 +287,12 @@ function initializeEventListeners() {
         });
     }
     
+    // Discord signup button
+    const discordSignupBtn = document.getElementById('discord-signup-btn');
+    if (discordSignupBtn) {
+        discordSignupBtn.addEventListener('click', handleDiscordSignup);
+    }
+    
     // Landing navbar scroll effect
     window.addEventListener('scroll', handleLandingNavbarScroll);
     
@@ -499,6 +505,33 @@ function handleSignup(e) {
     saveData();
     hideModal(signupModal);
     showApp();
+}
+
+// Handle Discord signup
+function handleDiscordSignup() {
+    // For now, simulate Discord OAuth flow
+    // In a real app, this would redirect to Discord OAuth
+    
+    // Create user object with Discord data (simulated)
+    currentUser = {
+        id: generateId(),
+        displayName: 'Discord User', // Would come from Discord API
+        email: 'discord@example.com', // Would come from Discord API
+        pin: '0000', // Default PIN for Discord users
+        wallet: null,
+        authProvider: 'discord',
+        discordId: 'discord_' + Math.random().toString(36).substring(2, 15),
+        createdAt: new Date().toISOString()
+    };
+    
+    saveData();
+    hideModal(signupModal);
+    showApp();
+    
+    // Show a message that they can connect wallet later
+    setTimeout(() => {
+        alert('Welcome! You can connect your Stellar wallet later in your profile settings.');
+    }, 1000);
 }
 
 // Handle setup form submission
