@@ -1104,6 +1104,27 @@ body {
     height: 20px;
 }
 
+/* Create Post Button Special Styling */
+.bottom-nav-btn.create-post-btn {
+    background-color: var(--accent);
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+    transition: all 0.2s ease;
+}
+
+.bottom-nav-btn.create-post-btn:hover {
+    background-color: #1A252F;
+    transform: scale(1.1);
+}
+
+.bottom-nav-btn.create-post-btn .nav-icon {
+    width: 24px;
+    height: 24px;
+}
+
 
 /* Modals */
 .modal {
