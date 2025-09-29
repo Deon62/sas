@@ -317,8 +317,10 @@ function toggleMobileSidebar() {
     if (hamburgerMenu && mobileSidebar) {
         hamburgerMenu.classList.toggle('active');
         mobileSidebar.classList.toggle('active');
-        // console.log('Classes toggled. Hamburger active:', hamburgerMenu.classList.contains('active'));
-        // console.log('Sidebar active:', mobileSidebar.classList.contains('active'));
+        // Update profile info when sidebar opens
+        if (mobileSidebar.classList.contains('active')) {
+            updateProfileInfo();
+        }
     } else {
         // console.log('Elements not found for toggle');
     }
@@ -332,6 +334,24 @@ function closeMobileSidebar() {
     if (hamburgerMenu && mobileSidebar) {
         hamburgerMenu.classList.remove('active');
         mobileSidebar.classList.remove('active');
+    }
+}
+
+// Update profile info in sidebar
+function updateProfileInfo() {
+    const profileName = document.getElementById('profile-name');
+    const profileBuddies = document.getElementById('profile-buddies');
+    
+    if (currentUser && profileName && profileBuddies) {
+        profileName.textContent = currentUser.displayName || 'Unknown User';
+        
+        // Calculate buddies count (for now, just use a mock number)
+        // In a real app, this would be the number of followers/friends
+        const buddiesCount = Math.floor(Math.random() * 50) + 10; // Random between 10-60
+        profileBuddies.textContent = `${buddiesCount} buddies`;
+    } else if (profileName && profileBuddies) {
+        profileName.textContent = 'Guest User';
+        profileBuddies.textContent = '0 buddies';
     }
 }
 

@@ -492,7 +492,7 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
     padding: 0.5rem 0.5rem 0 0;
     flex-shrink: 0;
     min-height: 20px;
@@ -522,6 +522,54 @@ body {
 .close-sidebar:hover {
     background-color: rgba(44, 62, 80, 0.1);
     color: var(--accent);
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background-color: rgba(44, 62, 80, 0.05);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.profile-avatar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.profile-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-buddies {
+    font-size: 0.75rem;
+    color: var(--muted);
 }
 
 .sidebar-links {
