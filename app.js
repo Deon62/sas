@@ -23,6 +23,7 @@ const signupModal = document.getElementById('signup-modal');
 const walletModal = document.getElementById('wallet-modal');
 const createPostModal = document.getElementById('create-post-modal');
 const postDetailModal = document.getElementById('post-detail-modal');
+const paymentModal = document.getElementById('payment-modal');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
@@ -254,11 +255,15 @@ function initializeEventListeners() {
     });
     
     // Modal close on backdrop click (only if modals exist)
-    [loginModal, signupModal, walletModal, createPostModal, postDetailModal].forEach(modal => {
+    [loginModal, signupModal, walletModal, createPostModal, postDetailModal, paymentModal].forEach(modal => {
         if (modal) {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
-                    hideModal(modal);
+                    if (modal === paymentModal) {
+                        hidePaymentModal();
+                    } else {
+                        hideModal(modal);
+                    }
                 }
             });
         }
@@ -291,6 +296,35 @@ function initializeEventListeners() {
     const discordSignupBtn = document.getElementById('discord-signup-btn');
     if (discordSignupBtn) {
         discordSignupBtn.addEventListener('click', handleDiscordSignup);
+    }
+    
+    // Payment modal event listeners
+    const closePaymentBtn = document.getElementById('close-payment-modal');
+    const cancelPaymentBtn = document.getElementById('cancel-payment-btn');
+    const paymentForm = document.getElementById('payment-form');
+    const paymentPinToggle = document.getElementById('payment-pin-toggle');
+    const xlmAmountInput = document.getElementById('xlm-amount');
+    
+    if (closePaymentBtn) {
+        closePaymentBtn.addEventListener('click', hidePaymentModal);
+    }
+    
+    if (cancelPaymentBtn) {
+        cancelPaymentBtn.addEventListener('click', hidePaymentModal);
+    }
+    
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', handlePaymentSubmit);
+    }
+    
+    if (paymentPinToggle) {
+        paymentPinToggle.addEventListener('click', () => {
+            togglePinVisibility('payment-pin', 'payment-pin-toggle');
+        });
+    }
+    
+    if (xlmAmountInput) {
+        xlmAmountInput.addEventListener('input', updatePaymentSummary);
     }
     
     // Landing navbar scroll effect
@@ -532,6 +566,96 @@ function handleDiscordSignup() {
     setTimeout(() => {
         alert('Welcome! You can connect your Stellar wallet later in your profile settings.');
     }, 1000);
+}
+
+// Show payment modal
+function showPaymentModal(recipientWallet, recipientName) {
+    if (!currentUser || !currentUser.wallet) {
+        alert('Please connect your Stellar wallet first to send XLM.');
+        return;
+    }
+    
+    // Set recipient information
+    document.getElementById('recipient-name').textContent = recipientName;
+    document.getElementById('recipient-wallet').textContent = recipientWallet;
+    
+    // Set source account
+    document.getElementById('source-account').value = currentUser.wallet;
+    
+    // Clear form
+    document.getElementById('xlm-amount').value = '';
+    document.getElementById('payment-memo').value = '';
+    document.getElementById('payment-pin').value = '';
+    document.getElementById('payment-pin').type = 'password';
+    document.getElementById('payment-pin-toggle').textContent = '👁️';
+    
+    // Update summary
+    updatePaymentSummary();
+    
+    // Show modal
+    paymentModal.classList.add('active');
+}
+
+// Hide payment modal
+function hidePaymentModal() {
+    paymentModal.classList.remove('active');
+}
+
+// Update payment summary
+function updatePaymentSummary() {
+    const amount = parseFloat(document.getElementById('xlm-amount').value) || 0;
+    const networkFee = 0.00001;
+    const total = amount + networkFee;
+    
+    document.getElementById('summary-amount').textContent = `${amount} XLM`;
+    document.getElementById('summary-total').textContent = `${total} XLM`;
+}
+
+// Handle payment submission
+function handlePaymentSubmit(e) {
+    e.preventDefault();
+    
+    if (!currentUser) {
+        alert('Please log in to send XLM.');
+        return;
+    }
+    
+    const amount = parseFloat(document.getElementById('xlm-amount').value);
+    const memo = document.getElementById('payment-memo').value;
+    const pin = document.getElementById('payment-pin').value;
+    const recipientWallet = document.getElementById('recipient-wallet').textContent;
+    
+    // Validate PIN
+    if (pin !== currentUser.pin) {
+        alert('Invalid PIN. Please try again.');
+        return;
+    }
+    
+    // Validate amount
+    if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
+    
+    // Simulate payment processing
+    const paymentData = {
+        from: currentUser.wallet,
+        to: recipientWallet,
+        amount: amount,
+        memo: memo,
+        timestamp: new Date().toISOString()
+    };
+    
+    // In a real app, this would make an API call to process the payment
+    console.log('Payment data:', paymentData);
+    
+    // Show success message
+    alert(`Successfully sent ${amount} XLM to ${document.getElementById('recipient-name').textContent}!`);
+    
+    // Hide modal
+    hidePaymentModal();
+    
+    // In a real app, you might want to refresh the leaderboard or show a transaction history
 }
 
 // Handle setup form submission
@@ -1465,9 +1589,28 @@ function loadLeaderboard(period = 'alltime') {
                 <div class="leaderboard-name">${escapeHtml(ambassador.displayName)}</div>
                 <div class="leaderboard-wallet">${shortWallet}</div>
             </div>
-            <div class="leaderboard-score">${ambassador.score}</div>
+            <div class="leaderboard-score-section">
+                <div class="leaderboard-score">${ambassador.score}</div>
+                <button class="send-xlm-btn" data-wallet="${ambassador.wallet}" data-name="${escapeHtml(ambassador.displayName)}" title="Send XLM">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13"></path>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                    </svg>
+                </button>
+            </div>
         `;
         container.appendChild(div);
+    });
+    
+    // Add event listeners for send XLM buttons
+    const sendBtns = container.querySelectorAll('.send-xlm-btn');
+    sendBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent leaderboard item click
+            const wallet = btn.dataset.wallet;
+            const name = btn.dataset.name;
+            showPaymentModal(wallet, name);
+        });
     });
     
     // Add empty state if no ambassadors
