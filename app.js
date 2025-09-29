@@ -180,13 +180,7 @@ function initializeEventListeners() {
         cancelPostBtn.addEventListener('click', hideCreatePostModal);
     }
     
-    // Navigation
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const view = e.target.dataset.view;
-            switchView(view);
-        });
-    });
+    // Navigation - removed nav-link handlers since navbar only has hamburger menu
     
     // Mobile sidebar navigation (only if elements exist)
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -553,14 +547,7 @@ function connectWallet() {
 
 // Switch between views
 function switchView(viewName) {
-    // Update nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    const navLink = document.querySelector(`.nav-link[data-view="${viewName}"]`);
-    if (navLink) {
-        navLink.classList.add('active');
-    }
+    // Nav links removed - only hamburger menu navigation now
     
     // Update sidebar links
     document.querySelectorAll('.sidebar-link').forEach(link => {

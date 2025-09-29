@@ -346,14 +346,15 @@ body {
 
 /* Navigation */
 .navbar {
-    background-color: var(--card);
+    background-color: rgba(245, 245, 240, 0.3);
+    backdrop-filter: blur(15px);
     padding: 0.75rem 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
     z-index: 100;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -379,16 +380,6 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-.nav-brand h2 {
-    color: var(--accent);
-    font-size: 1.25rem;
-    margin: 0;
-}
-
-.nav-links {
-    display: flex;
-    gap: 0.5rem;
-}
 
 /* Landing Nav Links */
 .landing-nav-links {
@@ -575,23 +566,6 @@ body {
     font-weight: 500;
 }
 
-.nav-link {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 0.875rem;
-    cursor: pointer;
-    padding: 0.375rem 0.5rem;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
-    border-radius: 4px;
-}
-
-.nav-link.active,
-.nav-link:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-}
 
 /* View Content */
 .view-content {
@@ -1343,9 +1317,6 @@ body {
         display: flex;
     }
     
-    .nav-links {
-        display: none;
-    }
     
     .view-content {
         padding: 0.75rem;
@@ -1499,9 +1470,6 @@ body {
         padding: 0.5rem 1rem;
     }
     
-    .nav-brand h2 {
-        font-size: 1.1rem;
-    }
     
     .features-grid {
         grid-template-columns: 1fr;
