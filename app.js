@@ -13,6 +13,7 @@ let currentUser = null;
 let posts = [];
 let votes = [];
 let ambassadors = [];
+let comments = [];
 
 // DOM Elements
 const landingView = document.getElementById('landing-view');
@@ -21,6 +22,7 @@ const loginModal = document.getElementById('login-modal');
 const signupModal = document.getElementById('signup-modal');
 const walletModal = document.getElementById('wallet-modal');
 const createPostModal = document.getElementById('create-post-modal');
+const postDetailModal = document.getElementById('post-detail-modal');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
@@ -50,11 +52,13 @@ function loadData() {
     const postsData = localStorage.getItem('ambassadorApp.posts');
     const votesData = localStorage.getItem('ambassadorApp.votes');
     const ambassadorsData = localStorage.getItem('ambassadorApp.ambassadors');
+    const commentsData = localStorage.getItem('ambassadorApp.comments');
 
     currentUser = userData ? JSON.parse(userData) : null;
     posts = postsData ? JSON.parse(postsData) : [];
     votes = votesData ? JSON.parse(votesData) : [];
     ambassadors = ambassadorsData ? JSON.parse(ambassadorsData) : [];
+    comments = commentsData ? JSON.parse(commentsData) : [];
 }
 
 // Save data to localStorage
@@ -65,6 +69,7 @@ function saveData() {
     localStorage.setItem('ambassadorApp.posts', JSON.stringify(posts));
     localStorage.setItem('ambassadorApp.votes', JSON.stringify(votes));
     localStorage.setItem('ambassadorApp.ambassadors', JSON.stringify(ambassadors));
+    localStorage.setItem('ambassadorApp.comments', JSON.stringify(comments));
 }
 
 // Check if user is authenticated
@@ -179,6 +184,7 @@ function initializeEventListeners() {
     if (cancelPostBtn) {
         cancelPostBtn.addEventListener('click', hideCreatePostModal);
     }
+
     
     // Navigation - removed nav-link handlers since navbar only has hamburger menu
     
@@ -248,7 +254,7 @@ function initializeEventListeners() {
     });
     
     // Modal close on backdrop click (only if modals exist)
-    [loginModal, signupModal, walletModal, createPostModal].forEach(modal => {
+    [loginModal, signupModal, walletModal, createPostModal, postDetailModal].forEach(modal => {
         if (modal) {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
@@ -257,6 +263,29 @@ function initializeEventListeners() {
             });
         }
     });
+    
+    // Post detail modal back button
+    const backToFeedBtn = document.getElementById('back-to-feed');
+    if (backToFeedBtn) {
+        backToFeedBtn.addEventListener('click', backToFeed);
+    }
+    
+    // Post detail modal comment submission
+    const submitCommentBtn = document.getElementById('submit-comment');
+    if (submitCommentBtn) {
+        submitCommentBtn.addEventListener('click', handleSubmitComment);
+    }
+    
+    // Comment input Enter key submission
+    const commentInput = document.getElementById('comment-input');
+    if (commentInput) {
+        commentInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmitComment();
+            }
+        });
+    }
     
     // Landing navbar scroll effect
     window.addEventListener('scroll', handleLandingNavbarScroll);
@@ -911,6 +940,14 @@ function loadNotifications() {
 function createPostElement(post) {
     const div = document.createElement('div');
     div.className = 'post-card';
+    div.style.cursor = 'pointer';
+    
+    // Add click handler to open post detail
+    div.addEventListener('click', (e) => {
+        // Don't open modal if clicking on action buttons
+        if (e.target.closest('.post-actions')) return;
+        showPostDetailModal(post.id);
+    });
     
     const author = ambassadors.find(a => a.id === post.authorId);
     const voteCount = votes.filter(v => v.postId === post.id).length;
@@ -1054,6 +1091,130 @@ function showCreatePostModal() {
 // Hide create post modal
 function hideCreatePostModal() {
     createPostModal.classList.remove('active');
+}
+
+// Show post detail modal
+function showPostDetailModal(postId) {
+    const postDetailModal = document.getElementById('post-detail-modal');
+    const post = posts.find(p => p.id === postId);
+    
+    if (!postDetailModal || !post) return;
+    
+    // Store post ID in modal for comment submission
+    postDetailModal.dataset.postId = postId;
+    
+    // Load post content
+    loadPostDetail(post);
+    
+    // Load comments
+    loadComments(postId);
+    
+    // Show modal
+    postDetailModal.classList.add('active');
+}
+
+// Back to feed function
+function backToFeed() {
+    const postDetailModal = document.getElementById('post-detail-modal');
+    if (postDetailModal) {
+        postDetailModal.classList.remove('active');
+    }
+}
+
+// Load post detail content
+function loadPostDetail(post) {
+    const postDetailBody = document.getElementById('post-detail-body');
+    if (!postDetailBody) return;
+    
+    const author = ambassadors.find(a => a.id === post.authorId);
+    const authorName = author ? author.displayName : 'Unknown User';
+    const voteCount = votes.filter(v => v.postId === post.id).length;
+    const hasVoted = currentUser && votes.some(v => v.postId === post.id && v.voterId === currentUser.id);
+    
+    postDetailBody.innerHTML = `
+        <div class="post-detail-author">
+            <div class="author-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="author-info">
+                <div class="author-name">${escapeHtml(authorName)}</div>
+                <div class="post-time">${formatDate(post.createdAt)}</div>
+            </div>
+        </div>
+        <h2 class="post-detail-title">${escapeHtml(post.title)}</h2>
+        <div class="post-detail-description">${escapeHtml(post.description)}</div>
+        ${post.image ? `<img src="${post.image}" alt="Post image" class="post-detail-image">` : ''}
+        <div class="post-detail-actions">
+            <button class="vote-btn ${hasVoted ? 'voted' : ''}" onclick="voteOnPost('${post.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 13l3 3 7-7"></path>
+                </svg>
+                <span>${voteCount}</span>
+            </button>
+        </div>
+    `;
+}
+
+// Load comments for a post
+function loadComments(postId) {
+    const commentsList = document.getElementById('comments-list');
+    if (!commentsList) return;
+    
+    const postComments = comments.filter(c => c.postId === postId);
+    
+    if (postComments.length === 0) {
+        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first to comment!</div>';
+        return;
+    }
+    
+    commentsList.innerHTML = postComments.map(comment => {
+        const author = ambassadors.find(a => a.id === comment.authorId);
+        const authorName = author ? author.displayName : 'Unknown User';
+        
+        return `
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="comment-author">${escapeHtml(authorName)}</div>
+                    <div class="comment-time">${formatDate(comment.createdAt)}</div>
+                </div>
+                <div class="comment-content">${escapeHtml(comment.content)}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Handle comment submission
+function handleSubmitComment() {
+    const commentInput = document.getElementById('comment-input');
+    
+    if (!commentInput || !currentUser) return;
+    
+    const content = commentInput.value.trim();
+    if (!content) return;
+    
+    // Get the current post ID from the modal
+    const postDetailModal = document.getElementById('post-detail-modal');
+    const postId = postDetailModal.dataset.postId;
+    
+    if (!postId) return;
+    
+    const comment = {
+        id: generateId(),
+        postId: postId,
+        authorId: currentUser.id,
+        content: content,
+        createdAt: new Date().toISOString()
+    };
+    
+    comments.push(comment);
+    saveData();
+    
+    // Clear input and reload comments
+    commentInput.value = '';
+    loadComments(postId);
 }
 
 // Handle create post
@@ -1416,6 +1577,33 @@ function seedTestData() {
         ];
         
         votes.push(...testVotes);
+        
+        // Create test comments
+        const testComments = [
+            {
+                id: 'comment1',
+                postId: 'post1',
+                authorId: 'amb2',
+                content: 'Great initiative! Looking forward to contributing to the community.',
+                createdAt: new Date(Date.now() - 3600000).toISOString() // 1 hour ago
+            },
+            {
+                id: 'comment2',
+                postId: 'post1',
+                authorId: 'amb3',
+                content: 'This is exactly what we needed. Count me in!',
+                createdAt: new Date(Date.now() - 1800000).toISOString() // 30 minutes ago
+            },
+            {
+                id: 'comment3',
+                postId: 'post2',
+                authorId: 'amb1',
+                content: 'The network improvements are impressive. Lower fees will definitely help adoption.',
+                createdAt: new Date(Date.now() - 7200000).toISOString() // 2 hours ago
+            }
+        ];
+        
+        comments.push(...testComments);
         
         saveData();
     }

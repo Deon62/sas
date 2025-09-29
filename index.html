@@ -529,6 +529,45 @@
         </div>
     </div>
 
+    <!-- Post Detail Modal -->
+    <div id="post-detail-modal" class="modal">
+        <div class="modal-content post-detail-modal-content">
+            <div class="post-detail-header">
+                <button class="back-btn" id="back-to-feed">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5"></path>
+                        <path d="M12 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <h2>Post Details</h2>
+            </div>
+            
+            <div class="post-detail-body" id="post-detail-body">
+                <!-- Post content will be loaded here -->
+            </div>
+            
+            <div class="post-detail-comments">
+                <div class="comments-header">
+                    <h3>Comments</h3>
+                </div>
+                <div class="comments-list" id="comments-list">
+                    <!-- Comments will be loaded here -->
+                </div>
+                <div class="comment-form">
+                    <div class="comment-input-container">
+                        <textarea id="comment-input" placeholder="Write a comment..." rows="3"></textarea>
+                        <button class="comment-send-btn" id="submit-comment">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"></path>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
