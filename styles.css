@@ -427,9 +427,11 @@ body {
 
 /* Navigation */
 .navbar {
-    background-color: rgba(245, 245, 240, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.75rem 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -443,14 +445,6 @@ body {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 700;
-}
-
-/* Fallback for browsers that support backdrop-filter */
-@supports (backdrop-filter: blur(25px)) {
-    .navbar {
-        background-color: rgba(245, 245, 240, 0.1);
-        backdrop-filter: blur(25px);
-    }
 }
 
 /* Landing Navigation */
@@ -718,6 +712,20 @@ body {
     background-color: rgba(44, 62, 80, 0.15);
     color: var(--accent);
     font-weight: 600;
+}
+
+.sidebar-link:active {
+    outline: none !important;
+    background-color: rgba(44, 62, 80, 0.15) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.sidebar-link:focus {
+    outline: none !important;
+}
+
+.sidebar-link:focus-visible {
+    outline: none !important;
 }
 
 .sidebar-icon {
@@ -1247,12 +1255,31 @@ body {
 }
 
 .rank-card {
-    background-color: var(--card);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1.2rem;
-    border-radius: 10px;
+    border-radius: 16px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 2px solid var(--secondary);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.rank-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.rank-card:active {
+    outline: none !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
+    transform: translateY(0) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.rank-card:focus {
+    outline: none !important;
 }
 
 .rank-card h3 {
@@ -1278,11 +1305,31 @@ body {
 }
 
 .stat-card {
-    background-color: var(--card);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 16px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.stat-card:active {
+    outline: none !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
+    transform: translateY(0) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.stat-card:focus {
+    outline: none !important;
 }
 
 .stat-card h3 {
@@ -1301,10 +1348,30 @@ body {
 }
 
 .dashboard-earnings {
-    background-color: var(--card);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1.2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.dashboard-earnings:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.dashboard-earnings:active {
+    outline: none !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
+    transform: translateY(0) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.dashboard-earnings:focus {
+    outline: none !important;
 }
 
 .dashboard-earnings h3 {
@@ -1321,8 +1388,26 @@ body {
 
 .earning-item {
     padding: 0.75rem;
-    background-color: rgba(44, 62, 80, 0.05);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.earning-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.earning-item:active {
+    outline: none !important;
+    transform: translateY(0) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.earning-item:focus {
+    outline: none !important;
 }
 
 .earning-text {
@@ -2221,6 +2306,73 @@ body {
     
     .navbar-brand {
         display: none;
+    }
+    
+    /* Remove highlighting on mobile for all interactive elements */
+    .sidebar-link:active {
+        outline: none !important;
+        background-color: rgba(44, 62, 80, 0.15) !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    .sidebar-link:focus {
+        outline: none !important;
+    }
+    
+    .sidebar-link:focus-visible {
+        outline: none !important;
+    }
+    
+    /* Remove highlighting from buttons on mobile */
+    .btn:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    .btn:focus {
+        outline: none !important;
+    }
+    
+    .btn:focus-visible {
+        outline: none !important;
+    }
+    
+    /* Remove highlighting from post cards on mobile */
+    .post-card:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    .post-card:focus {
+        outline: none !important;
+    }
+    
+    .post-card:focus-visible {
+        outline: none !important;
+    }
+    
+    /* Remove highlighting from dashboard cards on mobile */
+    .stat-card:active,
+    .rank-card:active,
+    .dashboard-earnings:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    .stat-card:focus,
+    .rank-card:focus,
+    .dashboard-earnings:focus {
+        outline: none !important;
+    }
+    
+    .stat-card:focus-visible,
+    .rank-card:focus-visible,
+    .dashboard-earnings:focus-visible {
+        outline: none !important;
     }
     
     
