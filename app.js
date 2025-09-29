@@ -1160,9 +1160,9 @@ function loadLeaderboard(period = 'alltime') {
     const timelineDiv = document.createElement('div');
     timelineDiv.className = 'leaderboard-timeline';
     timelineDiv.innerHTML = `
-        <button class="timeline-btn active" data-period="alltime">All Time</button>
-        <button class="timeline-btn" data-period="30days">30 Days</button>
-        <button class="timeline-btn" data-period="7days">7 Days</button>
+        <button class="timeline-btn ${period === 'alltime' ? 'active' : ''}" data-period="alltime">All Time</button>
+        <button class="timeline-btn ${period === '30days' ? 'active' : ''}" data-period="30days">30 Days</button>
+        <button class="timeline-btn ${period === '7days' ? 'active' : ''}" data-period="7days">7 Days</button>
     `;
     container.appendChild(timelineDiv);
     
@@ -1175,8 +1175,8 @@ function loadLeaderboard(period = 'alltime') {
             // Add active class to clicked button
             e.target.classList.add('active');
             // Reload leaderboard with selected period
-            const period = e.target.dataset.period;
-            loadLeaderboard(period);
+            const selectedPeriod = e.target.dataset.period;
+            loadLeaderboard(selectedPeriod);
         });
     });
     
