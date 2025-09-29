@@ -549,14 +549,7 @@ function connectWallet() {
 function switchView(viewName) {
     // Nav links removed - only hamburger menu navigation now
     
-    // Update sidebar links
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    const sidebarLink = document.querySelector(`.sidebar-link[data-view="${viewName}"]`);
-    if (sidebarLink) {
-        sidebarLink.classList.add('active');
-    }
+    // Sidebar links no longer have active states - removed highlighting
     
     // Update bottom navigation
     updateBottomNavActive(viewName);

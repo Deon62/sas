@@ -346,8 +346,8 @@ body {
 
 /* Navigation */
 .navbar {
-    background-color: rgba(245, 245, 240, 0.3);
-    backdrop-filter: blur(15px);
+    background-color: rgba(245, 245, 240, 0.15);
+    backdrop-filter: blur(20px);
     padding: 0.75rem 1rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     position: sticky;
@@ -541,13 +541,13 @@ body {
 }
 
 .sidebar-link:hover {
-    background-color: rgba(44, 62, 80, 0.1);
-    color: var(--accent);
+    background-color: transparent;
+    color: var(--text);
 }
 
 .sidebar-link.active {
-    background-color: var(--secondary);
-    color: var(--accent);
+    background-color: transparent;
+    color: var(--text);
 }
 
 .link-icon {
@@ -1159,10 +1159,17 @@ body {
 
 .bottom-nav-btn.active {
     color: var(--accent);
+    background-color: rgba(44, 62, 80, 0.1);
+    transform: scale(1.05);
 }
 
 .bottom-nav-btn:not(.active) {
     color: var(--muted);
+}
+
+.bottom-nav-btn:not(.active):hover {
+    color: var(--text);
+    background-color: rgba(44, 62, 80, 0.05);
 }
 
 .nav-icon {
@@ -1189,6 +1196,13 @@ body {
 .bottom-nav-btn.create-post-btn .nav-icon {
     width: 22px;
     height: 22px;
+}
+
+/* Override active state for create post button */
+.bottom-nav-btn.create-post-btn.active {
+    background-color: var(--accent);
+    color: white;
+    transform: scale(1.1);
 }
 
 
