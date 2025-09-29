@@ -618,11 +618,7 @@ function loadDashboard() {
             <div class="earnings-list">
                 ${latestEarnings.map(earning => `
                     <div class="earning-item">
-                        <div class="earning-info">
-                            <h4>${earning.type}</h4>
-                            <p class="earning-date">${earning.date}</p>
-                        </div>
-                        <div class="earning-amount">+${earning.amount}</div>
+                        <span class="earning-text">${earning.type} - +${earning.amount} (${earning.date})</span>
                     </div>
                 `).join('')}
             </div>
