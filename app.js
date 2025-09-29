@@ -237,7 +237,7 @@ function initializeEventListeners() {
         });
     }
     
-    // Floating create post button (only if element exists)
+    // Create post button in bottom navigation (only if element exists)
     const createPostBtn = document.getElementById('create-post-btn');
     if (createPostBtn) {
         createPostBtn.addEventListener('click', showCreatePostModal);

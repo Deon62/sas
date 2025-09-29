@@ -1104,28 +1104,6 @@ body {
     height: 20px;
 }
 
-/* Floating Button */
-.floating-btn {
-    position: fixed;
-    bottom: 6.5rem;
-    right: 2rem;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
-    transition: all 0.2s ease;
-    z-index: 1001;
-}
-
-.floating-btn:hover {
-    background-color: #1A252F;
-    transform: scale(1.1);
-}
 
 /* Modals */
 .modal {
@@ -1331,11 +1309,6 @@ body {
     /* Show bottom navigation on mobile */
     .bottom-nav {
         display: flex;
-    }
-    
-    /* Adjust floating button position for mobile */
-    .floating-btn {
-        bottom: 7.5rem;
     }
     
     /* Landing Navbar Mobile */
