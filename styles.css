@@ -592,64 +592,166 @@ body {
 
 .post-card {
     background-color: var(--card);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s ease;
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .post-card:hover {
-    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.post-content {
+    display: flex;
+    padding: 0.75rem;
+    gap: 0.75rem;
+}
+
+.post-votes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 40px;
+}
+
+.vote-arrow {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vote-arrow:hover {
+    background-color: rgba(44, 62, 80, 0.1);
+    color: var(--text);
+}
+
+.vote-arrow.up.voted {
+    color: var(--accent);
+    background-color: rgba(44, 62, 80, 0.1);
+}
+
+.vote-arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.vote-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 20px;
+    text-align: center;
+}
+
+.post-main {
+    flex: 1;
+    min-width: 0;
 }
 
 .post-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-}
-
-.post-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text);
     margin-bottom: 0.5rem;
 }
 
+.post-author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.author-avatar {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    flex-shrink: 0;
+}
+
+.author-avatar svg {
+    width: 100%;
+    height: 100%;
+}
+
 .post-meta {
-    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
     color: var(--muted);
 }
 
 .post-author {
     font-weight: 500;
+    color: var(--text);
+}
+
+.post-time {
+    color: var(--muted);
+}
+
+.post-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 .post-description {
-    margin-bottom: 1rem;
-    line-height: 1.6;
+    color: var(--text);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
 }
 
 .post-image {
     width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
 }
 
-.post-footer {
+.post-actions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(44, 62, 80, 0.1);
 }
 
-.vote-count {
-    font-weight: 500;
-    color: var(--accent);
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+.action-btn:hover {
+    background-color: rgba(44, 62, 80, 0.1);
+    color: var(--text);
+}
+
+.action-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
 /* Leaderboard */

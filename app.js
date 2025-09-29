@@ -886,30 +886,73 @@ function createPostElement(post) {
     const hasVoted = currentUser && votes.some(v => v.postId === post.id && v.voterId === currentUser.id);
     
     div.innerHTML = `
-        <div class="post-header">
-            <div>
+        <div class="post-content">
+            <div class="post-votes">
+                <button class="vote-arrow up ${hasVoted ? 'voted' : ''}" data-post-id="${post.id}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="18,15 12,9 6,15"></polyline>
+                    </svg>
+                </button>
+                <span class="vote-count">${voteCount}</span>
+                <button class="vote-arrow down" data-post-id="${post.id}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="post-main">
+                <div class="post-header">
+                    <div class="post-author-info">
+                        <div class="author-avatar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-author">${author ? author.displayName : 'Unknown'}</span>
+                            <span class="post-time">${formatDate(post.createdAt)}</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="post-title">${escapeHtml(post.title)}</div>
-                <div class="post-meta">
-                    by <span class="post-author">${author ? author.displayName : 'Unknown'}</span>
-                    <span class="post-wallet">(${author ? author.wallet.substring(0, 8) + '...' : 'Unknown'})</span>
-                    • ${formatDate(post.createdAt)}
+                <div class="post-description">${escapeHtml(post.description)}</div>
+                ${post.image ? `<img src="${post.image}" alt="Post image" class="post-image">` : ''}
+                <div class="post-actions">
+                    <button class="action-btn comments-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>0</span>
+                    </button>
+                    <button class="action-btn share-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                            <polyline points="16,6 12,2 8,6"></polyline>
+                            <line x1="12" y1="2" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Share</span>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="post-description">${escapeHtml(post.description)}</div>
-        ${post.image ? `<img src="${post.image}" alt="Post image" class="post-image">` : ''}
-        <div class="post-footer">
-            <span class="vote-count">${voteCount} vote${voteCount !== 1 ? 's' : ''}</span>
-            <button class="btn btn-primary vote-btn" ${hasVoted ? 'disabled' : ''} data-post-id="${post.id}">
-                ${hasVoted ? 'Voted' : 'Vote'}
-            </button>
-        </div>
     `;
     
-    // Add vote event listener
-    const voteBtn = div.querySelector('.vote-btn');
-    if (!hasVoted) {
-        voteBtn.addEventListener('click', () => voteOnPost(post.id));
+    // Add vote event listeners
+    const upVoteBtn = div.querySelector('.vote-arrow.up');
+    const downVoteBtn = div.querySelector('.vote-arrow.down');
+    
+    if (upVoteBtn && !hasVoted) {
+        upVoteBtn.addEventListener('click', () => voteOnPost(post.id));
+    }
+    
+    if (downVoteBtn) {
+        downVoteBtn.addEventListener('click', () => {
+            // For now, downvote just removes the upvote
+            if (hasVoted) {
+                removeVote(post.id);
+            }
+        });
     }
     
     return div;
@@ -945,6 +988,29 @@ function voteOnPost(postId) {
     saveData();
     loadFeed();
     loadLeaderboard();
+}
+
+// Remove vote from post
+function removeVote(postId) {
+    if (!currentUser) return;
+    
+    const voteIndex = votes.findIndex(v => v.postId === postId && v.voterId === currentUser.id);
+    if (voteIndex > -1) {
+        votes.splice(voteIndex, 1);
+        
+        // Update author's score
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+            const author = ambassadors.find(a => a.id === post.authorId);
+            if (author) {
+                author.score -= 1; // Remove 1 point
+            }
+        }
+        
+        saveData();
+        loadFeed();
+        loadLeaderboard();
+    }
 }
 
 // Show create post modal
