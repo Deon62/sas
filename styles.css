@@ -53,6 +53,18 @@ body {
     background: linear-gradient(135deg, var(--bg) 0%, #F0F0EB 100%);
 }
 
+.hero-main-content {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+}
+
 .hero h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
@@ -83,8 +95,9 @@ body {
 
 /* Features Section */
 .features-section {
-    margin-top: 4rem;
+    padding: 4rem 2rem;
     text-align: center;
+    background-color: var(--bg);
 }
 
 .features-section h3 {
@@ -236,7 +249,7 @@ body {
 .auth-buttons .btn {
     padding: 0.5rem 1.5rem;
     font-size: 0.875rem;
-    min-width: 80px;
+    min-width: 100px;
 }
 
 .auth-buttons .btn:first-child {
@@ -650,10 +663,17 @@ body {
     .auth-buttons .btn {
         flex: 1;
         justify-content: center;
+        min-width: 100px;
+        white-space: nowrap;
     }
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 1rem;
+        padding-top: 4rem;
+    }
+    
     .hero h1 {
         font-size: 2rem;
     }
@@ -662,8 +682,14 @@ body {
         font-size: 1rem;
     }
     
-    .hero-content {
-        padding: 0 1rem;
+    .hero-main-content {
+        padding: 1rem;
+        min-height: 100vh;
+        justify-content: center;
+    }
+    
+    .features-section {
+        padding: 2rem 1rem;
     }
     
     .navbar {
