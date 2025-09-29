@@ -887,19 +887,6 @@ function createPostElement(post) {
     
     div.innerHTML = `
         <div class="post-content">
-            <div class="post-votes">
-                <button class="vote-arrow up ${hasVoted ? 'voted' : ''}" data-post-id="${post.id}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="18,15 12,9 6,15"></polyline>
-                    </svg>
-                </button>
-                <span class="vote-count">${voteCount}</span>
-                <button class="vote-arrow down" data-post-id="${post.id}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="6,9 12,15 18,9"></polyline>
-                    </svg>
-                </button>
-            </div>
             <div class="post-main">
                 <div class="post-header">
                     <div class="post-author-info">
@@ -919,6 +906,12 @@ function createPostElement(post) {
                 <div class="post-description">${escapeHtml(post.description)}</div>
                 ${post.image ? `<img src="${post.image}" alt="Post image" class="post-image">` : ''}
                 <div class="post-actions">
+                    <button class="action-btn vote-btn ${hasVoted ? 'voted' : ''}" data-post-id="${post.id}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18,15 12,9 6,15"></polyline>
+                        </svg>
+                        <span>${voteCount}</span>
+                    </button>
                     <button class="action-btn comments-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -938,19 +931,15 @@ function createPostElement(post) {
         </div>
     `;
     
-    // Add vote event listeners
-    const upVoteBtn = div.querySelector('.vote-arrow.up');
-    const downVoteBtn = div.querySelector('.vote-arrow.down');
+    // Add vote event listener
+    const voteBtn = div.querySelector('.vote-btn');
     
-    if (upVoteBtn && !hasVoted) {
-        upVoteBtn.addEventListener('click', () => voteOnPost(post.id));
-    }
-    
-    if (downVoteBtn) {
-        downVoteBtn.addEventListener('click', () => {
-            // For now, downvote just removes the upvote
+    if (voteBtn) {
+        voteBtn.addEventListener('click', () => {
             if (hasVoted) {
                 removeVote(post.id);
+            } else {
+                voteOnPost(post.id);
             }
         });
     }
