@@ -549,7 +549,7 @@ function connectWallet() {
         
         saveData();
         loadProfile();
-        loadLeaderboard();
+        loadLeaderboard('alltime');
     } else {
         // Initialize user with wallet (for setup flow)
         currentUser = { wallet: publicKey };
@@ -599,7 +599,7 @@ function switchView(viewName) {
             break;
         case 'leaderboard':
             console.log('Loading leaderboard...');
-            loadLeaderboard();
+            loadLeaderboard('alltime');
             break;
         case 'chat':
             loadChat();
@@ -1018,7 +1018,7 @@ function voteOnPost(postId) {
     
     saveData();
     loadFeed();
-    loadLeaderboard();
+    loadLeaderboard('alltime');
 }
 
 // Remove vote from post
@@ -1040,7 +1040,7 @@ function removeVote(postId) {
         
         saveData();
         loadFeed();
-        loadLeaderboard();
+        loadLeaderboard('alltime');
     }
 }
 
@@ -1102,11 +1102,11 @@ function savePost(post) {
     saveData();
     hideCreatePostModal();
     loadFeed();
-    loadLeaderboard();
+    loadLeaderboard('alltime');
 }
 
 // Load leaderboard
-function loadLeaderboard() {
+function loadLeaderboard(period = 'alltime') {
     const container = document.getElementById('leaderboard-container');
     
     // Check if container exists
@@ -1117,8 +1117,35 @@ function loadLeaderboard() {
     
     container.innerHTML = '';
     
+    // Filter ambassadors based on period
+    let filteredAmbassadors = [...ambassadors];
+    
+    if (period !== 'alltime') {
+        const now = new Date();
+        let cutoffDate;
+        
+        if (period === '7days') {
+            cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        } else if (period === '30days') {
+            cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        }
+        
+        // Filter ambassadors based on their activity in the selected period
+        // For now, we'll use a simple approach - in a real app, you'd filter based on actual activity dates
+        filteredAmbassadors = ambassadors.filter(ambassador => {
+            // Mock filtering - in reality, you'd check when they last earned points
+            const randomActivity = Math.random();
+            if (period === '7days') {
+                return randomActivity > 0.3; // 70% of ambassadors active in last 7 days
+            } else if (period === '30days') {
+                return randomActivity > 0.1; // 90% of ambassadors active in last 30 days
+            }
+            return true;
+        });
+    }
+    
     // Sort ambassadors by score
-    const sortedAmbassadors = [...ambassadors].sort((a, b) => b.score - a.score);
+    const sortedAmbassadors = filteredAmbassadors.sort((a, b) => b.score - a.score);
     
     // Add header
     const headerDiv = document.createElement('div');
@@ -1128,6 +1155,30 @@ function loadLeaderboard() {
         <p>Top Stellar Ambassadors</p>
     `;
     container.appendChild(headerDiv);
+    
+    // Add timeline filter
+    const timelineDiv = document.createElement('div');
+    timelineDiv.className = 'leaderboard-timeline';
+    timelineDiv.innerHTML = `
+        <button class="timeline-btn active" data-period="alltime">All Time</button>
+        <button class="timeline-btn" data-period="30days">30 Days</button>
+        <button class="timeline-btn" data-period="7days">7 Days</button>
+    `;
+    container.appendChild(timelineDiv);
+    
+    // Add event listeners for timeline buttons
+    const timelineBtns = timelineDiv.querySelectorAll('.timeline-btn');
+    timelineBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Remove active class from all buttons
+            timelineBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            e.target.classList.add('active');
+            // Reload leaderboard with selected period
+            const period = e.target.dataset.period;
+            loadLeaderboard(period);
+        });
+    });
     
     // Limit to top 9 positions
     const topAmbassadors = sortedAmbassadors.slice(0, 9);

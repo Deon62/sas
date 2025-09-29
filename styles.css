@@ -820,6 +820,46 @@ body {
     font-size: 0.8rem;
 }
 
+/* Timeline Filter */
+.leaderboard-timeline {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+.timeline-btn {
+    background: none;
+    border: 1px solid rgba(44, 62, 80, 0.2);
+    border-radius: 20px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.timeline-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background-color: rgba(44, 62, 80, 0.05);
+}
+
+.timeline-btn.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+}
+
+.timeline-btn.active:hover {
+    background-color: #1A252F;
+    border-color: #1A252F;
+}
+
 .leaderboard-item {
     background-color: var(--card);
     border-radius: 8px;
@@ -1680,6 +1720,17 @@ body {
     
     .leaderboard-header p {
         font-size: 0.85rem;
+    }
+    
+    .leaderboard-timeline {
+        gap: 0.25rem;
+        margin-bottom: 0.75rem;
+        padding: 0 0.25rem;
+    }
+    
+    .timeline-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
     }
     
     .leaderboard-item {
