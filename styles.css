@@ -1923,15 +1923,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.15rem;
     border-bottom: 1px solid rgba(44, 62, 80, 0.1);
 }
 
 .payment-header h2 {
     margin: 0;
     color: var(--accent);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .close-btn {
@@ -1964,8 +1964,8 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
+    padding: 0.6rem;
+    margin-bottom: 0.4rem;
 }
 
 .recipient-info h3 {
@@ -1994,7 +1994,7 @@ body {
 }
 
 .payment-form .form-group {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
 }
 
 .payment-form .form-group label {
@@ -2033,8 +2033,8 @@ body {
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
 }
 
 .summary-item {
@@ -2061,7 +2061,7 @@ body {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
 }
 
 /* Modals */
