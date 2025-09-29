@@ -696,10 +696,36 @@ body {
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+    outline: none;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .post-card:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.post-card:active {
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    background-color: var(--card) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.post-card:focus {
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    background-color: var(--card) !important;
+}
+
+.post-card:focus-visible {
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
 }
 
 .post-content {
