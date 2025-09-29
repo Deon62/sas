@@ -677,10 +677,22 @@ body {
 
 .post-actions {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
     padding-top: 0.5rem;
     border-top: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.post-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.post-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .action-btn {

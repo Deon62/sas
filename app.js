@@ -906,26 +906,36 @@ function createPostElement(post) {
                 <div class="post-description">${escapeHtml(post.description)}</div>
                 ${post.image ? `<img src="${post.image}" alt="Post image" class="post-image">` : ''}
                 <div class="post-actions">
-                    <button class="action-btn vote-btn ${hasVoted ? 'voted' : ''}" data-post-id="${post.id}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="18,15 12,9 6,15"></polyline>
-                        </svg>
-                        <span>${voteCount}</span>
-                    </button>
-                    <button class="action-btn comments-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>0</span>
-                    </button>
-                    <button class="action-btn share-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                            <polyline points="16,6 12,2 8,6"></polyline>
-                            <line x1="12" y1="2" x2="12" y2="15"></line>
-                        </svg>
-                        <span>Share</span>
-                    </button>
+                    <div class="post-actions-left">
+                        <button class="action-btn vote-btn ${hasVoted ? 'voted' : ''}" data-post-id="${post.id}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18,15 12,9 6,15"></polyline>
+                            </svg>
+                            <span>${voteCount}</span>
+                        </button>
+                        <button class="action-btn comments-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>0</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                <polyline points="16,6 12,2 8,6"></polyline>
+                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                    <div class="post-actions-right">
+                        <button class="action-btn boost-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                            </svg>
+                            <span>Boost</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
