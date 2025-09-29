@@ -95,10 +95,18 @@ function initializeEventListeners() {
     // Login modal
     document.getElementById('login-form').addEventListener('submit', handleLogin);
     document.getElementById('login-pin-toggle').addEventListener('click', () => togglePinVisibility('login-pin', 'login-pin-toggle'));
+    document.getElementById('cancel-login-btn').addEventListener('click', () => {
+        clearLoginForm();
+        hideModal(loginModal);
+    });
     
     // Signup modal
     document.getElementById('signup-form').addEventListener('submit', handleSignup);
     document.getElementById('signup-pin-toggle').addEventListener('click', () => togglePinVisibility('signup-pin', 'signup-pin-toggle'));
+    document.getElementById('cancel-signup-btn').addEventListener('click', () => {
+        clearSignupForm();
+        hideModal(signupModal);
+    });
     
     // Wallet modal
     document.getElementById('connect-wallet-btn').addEventListener('click', showWalletModal);
@@ -153,6 +161,23 @@ function showLoginModal() {
 function showSignupModal() {
     signupModal.classList.add('active');
     closeLandingMobileMenu();
+}
+
+// Clear login form
+function clearLoginForm() {
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-pin').value = '';
+    document.getElementById('login-pin').type = 'password';
+    document.getElementById('login-pin-toggle').textContent = '👁️';
+}
+
+// Clear signup form
+function clearSignupForm() {
+    document.getElementById('signup-name').value = '';
+    document.getElementById('signup-email').value = '';
+    document.getElementById('signup-pin').value = '';
+    document.getElementById('signup-pin').type = 'password';
+    document.getElementById('signup-pin-toggle').textContent = '👁️';
 }
 
 // Show setup modal (for get started button)
