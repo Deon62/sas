@@ -715,28 +715,165 @@ function loadAI() {
     const container = document.getElementById('ai-container');
     container.innerHTML = `
         <div class="ai-header">
-            <h2>AI Assistant</h2>
-            <p>Ask me anything about Stellar or being an ambassador!</p>
+            <h2>Hello I am Liora</h2>
         </div>
-        <div class="ai-chat">
-            <div class="ai-message">
-                <div class="ai-avatar">🤖</div>
-                <div class="ai-content">
-                    <p>Hello! I'm your Stellar Ambassador AI assistant. I can help you with:</p>
-                    <ul>
-                        <li>Stellar network questions</li>
-                        <li>Ambassador program guidance</li>
-                        <li>Technical support</li>
-                        <li>Community best practices</li>
-                    </ul>
-                </div>
+        <div class="ai-conversation" id="ai-conversation">
+        </div>
+        <div class="ai-input-container">
+            <div class="ai-input">
+                <input type="text" placeholder="Ask me anything..." class="ai-text-input" id="ai-text-input">
+                <button class="ai-send-btn" id="ai-send-btn">Send</button>
             </div>
         </div>
-        <div class="ai-input">
-            <input type="text" placeholder="Ask me anything..." class="ai-text-input">
-            <button class="ai-send-btn">Send</button>
-        </div>
     `;
+    
+    // Add event listeners for AI chat
+    const textInput = document.getElementById('ai-text-input');
+    const sendBtn = document.getElementById('ai-send-btn');
+    const conversation = document.getElementById('ai-conversation');
+    
+    if (textInput && sendBtn && conversation) {
+        sendBtn.addEventListener('click', sendAIMessage);
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendAIMessage();
+            }
+        });
+    }
+}
+
+// Send AI message
+function sendAIMessage() {
+    const textInput = document.getElementById('ai-text-input');
+    const conversation = document.getElementById('ai-conversation');
+    
+    if (!textInput || !conversation || !textInput.value.trim()) return;
+    
+    const userMessage = textInput.value.trim();
+    textInput.value = '';
+    
+    // Add user message
+    addMessageToConversation('user', userMessage);
+    
+    // Show thinking state
+    showAIThinking();
+    
+    // Simulate AI response after delay
+    setTimeout(() => {
+        hideAIThinking();
+        const aiResponse = generateAIResponse(userMessage);
+        addMessageToConversation('ai', aiResponse);
+    }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
+}
+
+// Add message to conversation
+function addMessageToConversation(sender, message) {
+    const conversation = document.getElementById('ai-conversation');
+    if (!conversation) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ${sender}-message`;
+    
+        if (sender === 'user') {
+            messageDiv.innerHTML = `
+                <div class="ai-content user-content">
+                    <p>${escapeHtml(message)}</p>
+                </div>
+                <div class="ai-avatar user-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="ai-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <circle cx="12" cy="16" r="1"></circle>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <div class="ai-content">
+                    <p>${escapeHtml(message)}</p>
+                </div>
+            `;
+        }
+    
+    conversation.appendChild(messageDiv);
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
+// Show AI thinking state
+function showAIThinking() {
+    const conversation = document.getElementById('ai-conversation');
+    if (!conversation) return;
+    
+    const thinkingDiv = document.createElement('div');
+    thinkingDiv.className = 'ai-message ai-thinking';
+    thinkingDiv.id = 'ai-thinking';
+        thinkingDiv.innerHTML = `
+            <div class="ai-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <circle cx="12" cy="16" r="1"></circle>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <div class="ai-content">
+                <div class="thinking-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p>Liora is thinking...</p>
+            </div>
+        `;
+    
+    conversation.appendChild(thinkingDiv);
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
+// Hide AI thinking state
+function hideAIThinking() {
+    const thinkingDiv = document.getElementById('ai-thinking');
+    if (thinkingDiv) {
+        thinkingDiv.remove();
+    }
+}
+
+// Generate mock AI response
+function generateAIResponse(userMessage) {
+    const responses = [
+        "That's a great question about Stellar! The Stellar network is designed for fast, low-cost cross-border payments.",
+        "As a Stellar Ambassador, you can help by creating educational content and supporting new users in the community.",
+        "The Stellar Development Foundation provides excellent resources for developers. Check out their documentation!",
+        "Stellar's consensus protocol is unique - it uses the Stellar Consensus Protocol (SCP) for fast and secure transactions.",
+        "For ambassador activities, I recommend focusing on community engagement and sharing your knowledge about Stellar.",
+        "Stellar's native asset XLM is used for transaction fees and as a bridge currency for cross-border payments.",
+        "The Stellar network can handle thousands of transactions per second with very low fees - typically less than $0.01!",
+        "As an ambassador, you can earn rewards by participating in community events and creating valuable content.",
+        "Stellar's built-in decentralized exchange allows users to trade assets directly on the network without intermediaries.",
+        "The Stellar network is carbon-neutral and environmentally friendly, making it a sustainable blockchain solution."
+    ];
+    
+    // Simple keyword matching for more relevant responses
+    const message = userMessage.toLowerCase();
+    if (message.includes('ambassador') || message.includes('community')) {
+        return "As a Stellar Ambassador, you play a crucial role in growing the ecosystem. Focus on education, community building, and sharing your passion for Stellar with others!";
+    } else if (message.includes('stellar') || message.includes('network')) {
+        return "The Stellar network is a fast, low-cost blockchain designed for cross-border payments. It can process thousands of transactions per second with fees under $0.01!";
+    } else if (message.includes('xlm') || message.includes('lumens')) {
+        return "XLM (Stellar Lumens) is the native asset of the Stellar network. It's used for transaction fees and as a bridge currency for cross-border payments.";
+    } else if (message.includes('developer') || message.includes('build')) {
+        return "Stellar offers excellent developer tools! Check out the Stellar SDKs, Horizon API, and Stellar Laboratory for building on the network.";
+    } else if (message.includes('help') || message.includes('support')) {
+        return "I'm here to help! You can ask me about Stellar technology, ambassador activities, community guidelines, or any other questions about the ecosystem.";
+    }
+    
+    // Return random response if no keywords match
+    return responses[Math.floor(Math.random() * responses.length)];
 }
 
 // Load notifications
