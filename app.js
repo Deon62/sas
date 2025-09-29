@@ -1165,7 +1165,7 @@ function loadLeaderboard() {
                         <path d="M10 14.66V17c0 .55.47.98.97 1.21l1.03.34c.45.15.95.15 1.4 0l1.03-.34c.5-.23.97-.66.97-1.21v-2.34"></path>
                         <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
                     </svg>` : 
-                    '#' + rank
+                    rank
                 }
             </div>
             <div class="leaderboard-info">
